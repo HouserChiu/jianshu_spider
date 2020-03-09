@@ -7,7 +7,7 @@
 
 import scrapy
 
-
+# ArticleItem需要在js.py中作为模块导入
 class ArticleItem(scrapy.Item):
     title = scrapy.Field()
     origin_url = scrapy.Field()

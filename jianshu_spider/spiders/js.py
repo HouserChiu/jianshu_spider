@@ -8,9 +8,10 @@ class JsSpider(CrawlSpider):
     name = 'js'
     allowed_domains = ['jianshu.com']
     start_urls = ['https://www.jianshu.com/']
-
+    # 详情页的url写入allow，(.*)表示可有可无,url是由0-9和a-z构成，总共12位,详情页的推荐页面也需要爬，
+    # 所以，follow为True，rules作为元组只有一项。加逗号
     rules = (
-        Rule(LinkExtractor(allow=r'.*/p/[0-9a-z]{12}'), callback='parse_detail', follow=True),
+        Rule(LinkExtractor(allow=r'.*/p/[0-9a-z]{12}.*'), callback='parse_detail', follow=True),
     )
 
     def parse_detail(self, response):
@@ -24,6 +25,7 @@ class JsSpider(CrawlSpider):
         # pub_time = response.xpath("//span[@class='_3tCVn5']/time/text()").get()
         url = response.url
         url1 = url.split('?')[0]
+        # 以'/'分割为多部份，传入-1取最后一个
         article_id = url1.split('/')[-1]
         content = response.xpath("//article[@class='_2rhmJa']").get()
 
